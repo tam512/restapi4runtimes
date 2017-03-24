@@ -1,0 +1,50 @@
+<server description="new server1">
+    <!-- Enable features -->
+        <featureManager>
+                <feature>localConnector-1.0</feature>
+                <feature>ejbLite-3.2</feature>
+                <feature>jsf-2.2</feature>
+                <feature>apiDiscovery-1.0</feature>
+                <feature>jaxws-2.2</feature>
+                <feature>websocket-1.1</feature>
+                <feature>jdbc-4.1</feature>
+                <feature>cdi-1.2</feature>
+                <feature>jsp-2.3</feature>
+                <feature>jpa-2.1</feature>
+                <feature>jaxrs-2.0</feature>
+                <feature>jndi-1.0</feature>
+                <feature>beanValidation-1.1</feature>
+                <feature>ldapRegistry-3.0</feature>
+    </featureManager>
+
+    <httpSession cloneId="${cloneId}" />
+
+    <apiDiscovery  publicURL="myPublicAPI"
+                   swaggerDefinition="${server.config.dir}/custom/swaggerDef.yaml" />
+
+<!-- make SocialSphereAllergyForecast API private -->
+     <apiDiscovery>
+           <webModuleDoc contextRoot="/SocialSphereAllergyForecast" public="false"  />
+    </apiDiscovery>
+
+    <ldapRegistry baseDN="o=ibm,c=us" bindDN="cn=root" bindPassword="{xor}Pm4nazI6MDQ=" host="isdsldapsvt1.rtp.raleigh.ibm.com" id="ldap1" ldapType="IBM Tivoli Directory Server" port="389"/>
+        <jndiEntry jndiName="urls/hostname" value="http://aussvt106.rtp.raleigh.ibm.com:9080"/>
+        <jdbcDriver id="db2JdbcDriver" libraryRef="db2SharedLibrary"/>
+        <library filesetRef="db2FileSet" id="db2SharedLibrary"/>
+        <fileset dir="${shared.resource.dir}/db2jars" id="db2FileSet" includes="db2jcc4.jar db2jcc_license_cu.jar"/>
+
+        <dataSource id="jdbc/social" jdbcDriverRef="db2JdbcDriver" jndiName="jdbc/social" statementCacheSize="30" transactional="true" type="javax.sql.XADataSource">
+        <properties databaseName="SOCIALDB" driverType="4" password="${dbPasswd}" portNumber="${dbPort}" serverName="${dbHost}" user="${dbUser}"/>
+    </dataSource>
+
+<applicationMonitor updateTrigger="mbean"/>
+<enterpriseApplication id="SocialSphere_4Q16" location="SocialSphere_4Q16.ear" name="SocialSphere_4Q16" >
+        <application-bnd>
+                <security-role name="ss_admin">
+                        <user name="persona1" />
+                        <user name="persona2" />
+                        <user name="persona3" />
+                </security-role>
+        </application-bnd>
+     </enterpriseApplication>
+</server>
