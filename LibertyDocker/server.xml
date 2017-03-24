@@ -1,0 +1,23 @@
+<server description="server1">
+
+    <!-- Enable features -->
+        <featureManager>
+                <feature>localConnector-1.0</feature>
+                <feature>apiDiscovery-1.0</feature>
+                <feature>jsp-2.3</feature>
+                <feature>jsonp-1.0</feature>
+                <feature>jaxrs-2.0</feature>
+        </featureManager>
+
+        <httpEndpoint id="defaultHttpEndpoint"
+                 host="*"
+                 httpPort="${memberHttpPort}"
+                 httpsPort="${memberHttpsPort}" />
+
+        <basicRegistry id="basic">
+                <user name="admin" password="password"/>
+                <user name="nonadmin" password="password"/>
+        </basicRegistry>
+
+        <applicationMonitor updateTrigger="mbean"/>
+</server>
