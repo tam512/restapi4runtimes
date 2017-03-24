@@ -1,0 +1,68 @@
+<server description="controller server">
+    <!-- Enable features -->
+    <featureManager>
+        <feature>collectiveController-1.0</feature>
+        <feature>adminCenter-1.0</feature>
+        <feature>apiDiscovery-1.0</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint"
+                  host="*"
+                  httpPort="9082"
+                  httpsPort="9445" />
+
+    <!-- Define the host name for use by the collective.
+         If the host name needs to be changed, the server should be
+         removed from the collective and re-joined or re-replicated. -->
+    <variable name="defaultHostName" value="controllerHost.rtp.raleigh.ibm.com" />
+
+    <!-- Set the security configuration for Administrative access -->
+    <quickStartSecurity userName="adminUser" userPassword="adminPassword" />
+
+<!-- customnize swagger UI banner, title & description in swaggerDef.yaml,
+      customize public url with myPublicAPI instead of the default api  -->
+
+    <apiDiscovery  publicURL="myPublicAPI"
+              swaggerDefinition="${server.config.dir}/custom/swaggerDef.yaml" />
+
+    <collectiveController user="adminUser" password="adminPassword"/>
+
+    <deployVariable name="memberHttpPort" value="9090" increment="2"/>
+    <deployVariable name="memberHttpsPort" value="9453" increment="2"/>
+
+    <deployVariable name="wlpn.appPort" value="9091" increment="2"/>
+    <deployVariable name="wlpn.adminPort" value="9454" increment="2"/>
+  
+<!--  remoteFileAccess is needed for deploying Node.js app -->
+   <remoteFileAccess writeDir="c:/nodejsApps"/>
+
+    <!-- Docker registry connection information -->
+    <variable name="dockerRegistryTokenURL" value="https://auth.docker.io/token?service=registry.docker.io" />
+    <variable name="dockerRegistry" value="https://registry.hub.docker.com/v2" />
+    <variable name="dockerRepository" value="tamdocker/libertybeta-docker" />
+    <variable name="dockerUser" value="tamdocker" />
+    <variable name="dockerUserPassword" value="xxxxxxxx" />
+    <variable name="dockerUserEmail" value="tamdinh@us.ibm.com" />
+
+       <!-- clientAuthenticationSupported set to enable bidirectional trust -->
+       <ssl id="defaultSSLConfig"
+            sslProtocol="TLSv1.2"
+            keyStoreRef="defaultKeyStore"
+            trustStoreRef="defaultTrustStore"
+            clientAuthenticationSupported="true" />
+       <!-- inbound (HTTPS) keystore -->
+       <keyStore id="defaultKeyStore" password="{xor}Ej4xPjg6MjoxKw=="
+                 location="${server.config.dir}/resources/security/key.jks" />
+       <!-- inbound (HTTPS) truststore -->
+       <keyStore id="defaultTrustStore" password="{xor}Ej4xPjg6MjoxKw=="
+                 location="${server.config.dir}/resources/security/trust.jks" />
+       <!-- server identity keystore -->
+       <keyStore id="serverIdentity" password="{xor}Ej4xPjg6MjoxKw=="
+                 location="${server.config.dir}/resources/collective/serverIdentity.jks" />
+       <!-- collective trust keystore -->
+       <keyStore id="collectiveTrust" password="{xor}Ej4xPjg6MjoxKw=="
+                 location="${server.config.dir}/resources/collective/collectiveTrust.jks" />
+       <!-- collective root signers keystore -->
+       <keyStore id="collectiveRootKeys" password="{xor}Ej4xPjg6MjoxKw=="
+                 location="${server.config.dir}/resources/collective/rootKeys.jks" />
+</server>
