@@ -1,0 +1,17 @@
+{
+   "swagger":"2.0",
+   "info":{
+      "description":"List of available API",
+      "version":"1.0.0",
+      "title":"Liberty REST APIs with Custom Banner",
+      "x-ibm-css":"${server.config.dir}/css/custom-header.css",
+      "termsOfService":"http://swagger.io/terms/",
+      "contact":{
+         "email":"apiteam@swagger.io"
+      },
+      "license":{
+         "name":"Apache 2.0",
+         "url":"http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+   }
+}
